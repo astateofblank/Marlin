@@ -1569,7 +1569,7 @@ void do_blocking_move_to(const float &x, const float &y, const float &z, const f
 
   #if ENABLED(DELTA)
 
-    if (!position_is_reachable_xy(x, y)) return;
+    if (!position_is_reachable_xy(x, y) && soft_endstops_enabled) return;
 
     feedrate_mm_s = fr_mm_s ? fr_mm_s : XY_PROBE_FEEDRATE_MM_S;
 
@@ -10149,6 +10149,21 @@ inline void gcode_T(uint8_t tmp_extruder) {
   #endif
 }
 
+#ifdef FAN_AUTO_PIN
+  void setup_auto_fan() {
+    SET_OUTPUT(FAN_AUTO_PIN);
+    WRITE(FAN_AUTO_PIN, LOW);
+  }
+
+  void scan_auto_fan() {
+    if (thermalManager.degHotend(0) > 60) {
+      WRITE(FAN_AUTO_PIN, HIGH);
+    } else {
+      WRITE(FAN_AUTO_PIN, LOW);
+    }
+  }
+#endif
+
 /**
  * Process a single command and dispatch it to its handler
  * This is called from the main loop()
@@ -11509,7 +11524,7 @@ void set_current_from_steppers_for_axis(const AxisEnum axis) {
     }
 
     // Fail if attempting move outside printable radius
-    if (!position_is_reachable_xy(ltarget[X_AXIS], ltarget[Y_AXIS])) return true;
+    if (!position_is_reachable_xy(ltarget[X_AXIS], ltarget[Y_AXIS]) && soft_endstops_enabled) return true;
 
     // Get the cartesian distances moved in XYZE
     const float difference[XYZE] = {
@@ -12477,6 +12492,9 @@ void idle(
 ) {
   lcd_update();
 
+  #ifdef FAN_AUTO_PIN
+    scan_auto_fan();
+  #endif
   host_keepalive();
 
   #if ENABLED(AUTO_REPORT_TEMPERATURES) && (HAS_TEMP_HOTEND || HAS_TEMP_BED)
@@ -12714,6 +12732,9 @@ void setup() {
     #endif
   #endif
 
+  #ifdef FAN_AUTO_PIN
+    setup_auto_fan();
+  #endif
   lcd_init();
   #if ENABLED(SHOW_BOOTSCREEN)
     #if ENABLED(DOGLCD)
