@@ -430,13 +430,13 @@
   // Make delta curves from many straight lines (linear interpolation).
   // This is a trade-off between visible corners (not enough segments)
   // and processor overload (too many expensive sqrt calls).
-  #define DELTA_SEGMENTS_PER_SECOND 100
+  #define DELTA_SEGMENTS_PER_SECOND 120
 
   // Center-to-center distance of the holes in the diagonal push rods.
-  #define DELTA_DIAGONAL_ROD 267.5 // mm
+  #define DELTA_DIAGONAL_ROD 268.0 // mm
 
   // Horizontal offset from middle of printer to smooth rod center.
-  #define DELTA_SMOOTH_ROD_OFFSET 180.05 // mm
+  #define DELTA_SMOOTH_ROD_OFFSET 179.93 // mm
 
   // Horizontal offset of the universal joints on the end effector.
   #define DELTA_EFFECTOR_OFFSET 31.0 // mm
@@ -448,20 +448,20 @@
   #define DELTA_RADIUS (DELTA_SMOOTH_ROD_OFFSET - DELTA_EFFECTOR_OFFSET - DELTA_CARRIAGE_OFFSET) //mm  Get this value from auto calibrate
 
   // height from z=0.00 to home position
-  #define DELTA_HEIGHT 296.7 // get this value from auto calibrate - use G33 P1 at 1st time calibration
+  #define DELTA_HEIGHT 296.0 // get this value from auto calibrate - use G33 P1 at 1st time calibration
 
   // Print surface diameter/2 minus unreachable space (avoid collisions with vertical towers).
-  #define DELTA_PRINTABLE_RADIUS 115.0
+  #define DELTA_PRINTABLE_RADIUS 116.0
 
   // Delta calibration menu
   // See http://minow.blogspot.com/index.html#4918805519571907051
-  #define DELTA_CALIBRATION_MENU
+  // #define DELTA_CALIBRATION_MENU
 
   // set the radius for the calibration probe points - max DELTA_PRINTABLE_RADIUS*0.869 if DELTA_AUTO_CALIBRATION enabled
-  #define DELTA_CALIBRATION_RADIUS ((DELTA_PRINTABLE_RADIUS) * 0.862) // mm
+  #define DELTA_CALIBRATION_RADIUS 115.0 // mm
 
   // G33 Delta Auto-Calibration (Enable EEPROM_SETTINGS to store results)
-  // #define DELTA_AUTO_CALIBRATION
+  #define DELTA_AUTO_CALIBRATION
   #if ENABLED(DELTA_AUTO_CALIBRATION)
     #define DELTA_CALIBRATION_DEFAULT_POINTS 3 // set the default number of probe points : n*n (-7 -> +7)
   #endif
@@ -469,16 +469,16 @@
   // After homing move down to a height where XY movement is unconstrained
   //#define DELTA_HOME_TO_SAFE_ZONE
 
-  #define DELTA_ENDSTOP_ADJ { 0, 0, 0 } // get these from auto calibrate
+  #define DELTA_ENDSTOP_ADJ { 0.0, -0.30, -0.19 } // get these from auto calibrate
 
   // Trim adjustments for individual towers
   // tower angle corrections for X and Y tower / rotate XYZ so Z tower angle = 0
   // measured in degrees anticlockwise looking from above the printer
-  #define DELTA_TOWER_ANGLE_TRIM { 0.35, -0.15, 0 } // get these from auto calibrate
+  #define DELTA_TOWER_ANGLE_TRIM { 0.84, 0.46, 0 } // get these from auto calibrate
 
   // delta radius and diaginal rod adjustments measured in mm
   //#define DELTA_RADIUS_TRIM_TOWER {0, 0, 0}
-  //#define DELTA_DIAGONAL_ROD_TRIM_TOWER {0, 0, 0}
+  #define DELTA_DIAGONAL_ROD_TRIM_TOWER {0, 0, 0}
 
 #endif
 
@@ -551,7 +551,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 80, 96 }  // default steps per unit for Kossel (GT2, 20 tooth)
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 81.5, 81.5, 81.5, 96 }  // default steps per unit for Kossel (GT2, 20 tooth)
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -707,7 +707,7 @@
  */
 #define X_PROBE_OFFSET_FROM_EXTRUDER 0      // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER 0      // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER -21.05 // Z offset: -below +above  [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -20.93 // Z offset: -below +above  [the nozzle]
 
 // X and Y axis travel speed (mm/m) between probes
 #define XY_PROBE_SPEED 3000
@@ -786,8 +786,8 @@
 #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
 
 // For M851 give a range for adjusting the Z probe offset
-#define Z_PROBE_OFFSET_RANGE_MIN -20
-#define Z_PROBE_OFFSET_RANGE_MAX 20
+#define Z_PROBE_OFFSET_RANGE_MIN -25
+#define Z_PROBE_OFFSET_RANGE_MAX -15
 
 // Enable the M48 repeatability test to test probe accuracy
 //#define Z_MIN_PROBE_REPEATABILITY_TEST

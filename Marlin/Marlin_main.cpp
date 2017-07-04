@@ -5058,6 +5058,12 @@ void home_all_axes() { gcode_G28(true); }
         return;
       }
 
+      const int8_t max_iterations = parser.seen('I') ? parser.value_int() : 31;
+      if (!WITHIN(max_iterations, 1, 31)) {
+        SERIAL_PROTOCOLLNPGM("?(I)terations is implausible (1 to 31).");
+        return;
+      }
+
       const float calibration_precision = parser.seen('C') ? parser.value_float() : 0.0;
       if (calibration_precision < 0) {
         SERIAL_PROTOCOLLNPGM("?(C)alibration precision is implausible (>0).");
@@ -5350,7 +5356,7 @@ void home_all_axes() { gcode_G28(true); }
           }
           else {                                                     // !end iterations
             char mess[15] = "No convergence";
-            if (iterations < 31)
+            if (iterations < max_iterations)
               sprintf_P(mess, PSTR("Iteration : %02i"), (int)iterations);
             SERIAL_PROTOCOL(mess);
             SERIAL_PROTOCOL_SP(36);
@@ -5410,7 +5416,7 @@ void home_all_axes() { gcode_G28(true); }
         endstops.not_homing();
 
       }
-      while (zero_std_dev < test_precision && zero_std_dev > calibration_precision && iterations < 31);
+      while (zero_std_dev < test_precision && zero_std_dev > calibration_precision && iterations < max_iterations);
 
       #if ENABLED(DELTA_HOME_TO_SAFE_ZONE)
         do_blocking_move_to_z(delta_clip_start_height);
@@ -5956,7 +5962,8 @@ inline void gcode_M17() {
           nozzle_timed_out |= thermalManager.is_heater_idle(e);
 
       #if ENABLED(ULTIPANEL)
-        if (nozzle_timed_out) ensure_safe_temperature();
+        if (nozzle_timed_out) 
+          lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_CLICK_TO_HEAT_NOZZLE);
       #endif
 
       idle(true);
