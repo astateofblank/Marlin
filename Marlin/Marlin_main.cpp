@@ -6071,7 +6071,7 @@ inline void gcode_M17() {
     destination[E_AXIS] = current_position[E_AXIS] = resume_position[E_AXIS];
     planner.set_e_position_mm(current_position[E_AXIS]);
 
-    #if IS_KINEMATIC
+    #if IS_KINEMATIC && !ENABLED(DELTA)
       // Move XYZ to starting position
       destination[X_AXIS] = resume_position[X_AXIS];
       destination[Y_AXIS] = resume_position[Y_AXIS];
