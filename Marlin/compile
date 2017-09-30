@@ -1,0 +1,1 @@
+/home/pi/Downloads/arduino-1.8.2/arduino --verify --verbose --pref build.path=./tmp --preserve-temp-files Marlin.ino
