@@ -448,7 +448,7 @@
   #define DELTA_RADIUS (DELTA_SMOOTH_ROD_OFFSET - DELTA_EFFECTOR_OFFSET - DELTA_CARRIAGE_OFFSET) //mm  Get this value from auto calibrate
 
   // height from z=0.00 to home position
-  #define DELTA_HEIGHT 296.0 // get this value from auto calibrate - use G33 P1 at 1st time calibration
+  #define DELTA_HEIGHT 303.0 // get this value from auto calibrate - use G33 P1 at 1st time calibration
 
   // Print surface diameter/2 minus unreachable space (avoid collisions with vertical towers).
   #define DELTA_PRINTABLE_RADIUS 116.0
@@ -815,9 +815,9 @@
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-#define INVERT_X_DIR true // DELTA does not invert
-#define INVERT_Y_DIR true
-#define INVERT_Z_DIR true
+#define INVERT_X_DIR false // DELTA does not invert
+#define INVERT_Y_DIR false
+#define INVERT_Z_DIR false
 
 // Enable this option for Toshiba stepper drivers
 //#define CONFIG_STEPPERS_TOSHIBA
@@ -825,7 +825,7 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR true
+#define INVERT_E0_DIR false
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false

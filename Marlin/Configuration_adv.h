@@ -181,11 +181,11 @@
  * The fan will turn on automatically whenever any stepper is enabled
  * and turn off after a set period after all steppers are turned off.
  */
-//#define USE_CONTROLLER_FAN
+#define USE_CONTROLLER_FAN
 #if ENABLED(USE_CONTROLLER_FAN)
-  //#define CONTROLLER_FAN_PIN FAN1_PIN  // Set a custom pin for the controller fan
-  #define CONTROLLERFAN_SECS 60          // Duration in seconds for the fan to run after all motors are disabled
-  #define CONTROLLERFAN_SPEED 255        // 255 == full speed
+  #define CONTROLLER_FAN_PIN 7           // Set a custom pin for the controller fan
+  #define CONTROLLERFAN_SECS 30          // Duration in seconds for the fan to run after all motors are disabled
+  #define CONTROLLERFAN_SPEED 192        // 255 == full speed
 #endif
 
 // When first starting the main fan, run it at full speed for the
@@ -733,7 +733,7 @@
 // enter the serial receive buffer, so they cannot be blocked.
 // Currently handles M108, M112, M410
 // Does not work on boards using AT90USB (USBCON) processors!
-//#define EMERGENCY_PARSER
+#define EMERGENCY_PARSER
 
 // Bad Serial-connections can miss a received command by sending an 'ok'
 // Therefore some clients abort after 30 seconds in a timeout.
