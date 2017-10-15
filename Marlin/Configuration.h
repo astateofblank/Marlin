@@ -448,7 +448,7 @@
   #define DELTA_RADIUS (DELTA_SMOOTH_ROD_OFFSET - DELTA_EFFECTOR_OFFSET - DELTA_CARRIAGE_OFFSET) //mm  Get this value from auto calibrate
 
   // height from z=0.00 to home position
-  #define DELTA_HEIGHT 303.0 // get this value from auto calibrate - use G33 P1 at 1st time calibration
+  #define DELTA_HEIGHT 305.0 // get this value from auto calibrate - use G33 P1 at 1st time calibration
 
   // Print surface diameter/2 minus unreachable space (avoid collisions with vertical towers).
   #define DELTA_PRINTABLE_RADIUS 116.0
@@ -478,7 +478,7 @@
 
   // delta radius and diaginal rod adjustments measured in mm
   //#define DELTA_RADIUS_TRIM_TOWER {0, 0, 0}
-  #define DELTA_DIAGONAL_ROD_TRIM_TOWER {0, 0, 0}
+  #define DELTA_DIAGONAL_ROD_TRIM_TOWER {-0.25, 0, 0}
 
 #endif
 
