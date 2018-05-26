@@ -880,11 +880,11 @@
  */
 #define ADVANCED_PAUSE_FEATURE
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
-  #define PAUSE_PARK_X_POS 0                  // X position of hotend
-  #define PAUSE_PARK_Y_POS -110               // Y position of hotend
-  #define PAUSE_PARK_Z_ADD 25                 // Z addition of hotend (lift)
-  #define PAUSE_PARK_XY_FEEDRATE 40           // X and Y axes feedrate in mm/s (also used for delta printers Z axis)
-  #define PAUSE_PARK_Z_FEEDRATE 40            // Z axis feedrate in mm/s (not used for delta printers)
+  // #define PAUSE_PARK_X_POS 0                  // X position of hotend
+  // #define PAUSE_PARK_Y_POS -110               // Y position of hotend
+  // #define PAUSE_PARK_Z_ADD 25                 // Z addition of hotend (lift)
+  // #define PAUSE_PARK_XY_FEEDRATE 40           // X and Y axes feedrate in mm/s (also used for delta printers Z axis)
+  // #define PAUSE_PARK_Z_FEEDRATE 40            // Z axis feedrate in mm/s (not used for delta printers)
   #define PAUSE_PARK_RETRACT_FEEDRATE 60      // Initial retract feedrate in mm/s
   #define PAUSE_PARK_RETRACT_LENGTH 5         // Initial retract in mm
                                               // It is a short retract used immediately after print interrupt before move to filament exchange position
