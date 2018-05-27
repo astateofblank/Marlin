@@ -1,3 +1,3 @@
 #!/bin/bash
 
-/home/pi/Arduino/latest/arduino --verify --verbose --board arduino:avr:mega:cpu=atmega2560 --pref build.path=./tmp --preserve-temp-files Marlin.ino
+/home/pi/Arduino/latest/arduino --verify --verbose --board arduino:avr:mega:cpu=atmega2560 --pref build.path=./tmp/compile --preserve-temp-files Marlin.ino

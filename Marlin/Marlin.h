@@ -308,7 +308,8 @@ void report_current_position();
                delta_calibration_radius,
                delta_diagonal_rod_2_tower[ABC],
                delta_segments_per_second,
-               delta_clip_start_height;
+               delta_clip_start_height,
+               delta_axis_scale[XYZ];
 
   void recalc_delta_settings();
   float delta_safe_distance_from_top();
@@ -321,10 +322,10 @@ void report_current_position();
   #endif
 
   // Macro to obtain the Z position of an individual tower
-  #define DELTA_Z(V,T) V[Z_AXIS] + _SQRT(   \
+  #define DELTA_Z(V,T) (V[Z_AXIS] * delta_axis_scale[Z_AXIS]) + _SQRT(   \
     delta_diagonal_rod_2_tower[T] - HYPOT2( \
-        delta_tower[T][X_AXIS] - V[X_AXIS], \
-        delta_tower[T][Y_AXIS] - V[Y_AXIS]  \
+        delta_tower[T][X_AXIS] - (V[X_AXIS] * delta_axis_scale[X_AXIS]), \
+        delta_tower[T][Y_AXIS] - (V[Y_AXIS] * delta_axis_scale[Y_AXIS]) \
       )                                     \
     )
 

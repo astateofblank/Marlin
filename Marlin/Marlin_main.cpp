@@ -201,6 +201,7 @@
  * M502 - Revert to the default "factory settings". ** Does not write them to EEPROM! **
  * M503 - Print the current settings (in memory): "M503 S<verbose>". S0 specifies compact output.
  * M540 - Enable/disable SD card abort on endstop hit: "M540 S<state>". (Requires ABORT_ON_ENDSTOP_HIT_FEATURE_ENABLED)
+ * M579 - Scale Cartesian axes
  * M600 - Pause for filament change: "M600 X<pos> Y<pos> Z<raise> E<first_retract> L<later_retract>". (Requires ADVANCED_PAUSE_FEATURE)
  * M665 - Set delta configurations: "M665 L<diagonal rod> R<delta radius> S<segments/s> A<rod A trim mm> B<rod B trim mm> C<rod C trim mm> I<tower A trim angle> J<tower B trim angle> K<tower C trim angle>" (Requires DELTA)
  * M666 - Set delta endstop adjustment. (Requires DELTA)
@@ -612,7 +613,8 @@ uint8_t target_extruder;
         delta_calibration_radius,
         delta_diagonal_rod_2_tower[ABC],
         delta_segments_per_second,
-        delta_clip_start_height = Z_MAX_POS;
+        delta_clip_start_height = Z_MAX_POS,
+        delta_axis_scale[XYZ];
 
   float delta_safe_distance_from_top();
 
@@ -1575,7 +1577,7 @@ void do_blocking_move_to(const float &rx, const float &ry, const float &rz, cons
 
   #if ENABLED(DELTA)
 
-    if (!position_is_reachable_xy(x, y) && soft_endstops_enabled) return;
+    if (!position_is_reachable(rx, ry) && soft_endstops_enabled) return;
 
     feedrate_mm_s = fr_mm_s ? fr_mm_s : XY_PROBE_FEEDRATE_MM_S;
 
@@ -5955,7 +5957,7 @@ void home_all_axes() { gcode_G28(true); }
 
       // print report
 
-      if (verbose_level > 2)
+      if (verbose_level > 2 || verbose_level == 0)
         print_G33_results(z_at_pt, _tower_results, _opposite_results);
 
       if (verbose_level != 0) {                                    // !dry run
@@ -9997,6 +9999,17 @@ inline void gcode_M502() {
 
 #endif // SKEW_CORRECTION_GCODE
 
+#if ENABLED(DELTA)
+  /**
+   * M579: Scale Cartesian axes
+   */
+  inline void gcode_M579() {
+    if (parser.seen('X')) delta_axis_scale[X_AXIS] = parser.value_float();
+    if (parser.seen('Y')) delta_axis_scale[Y_AXIS] = parser.value_float();
+    if (parser.seen('Z')) delta_axis_scale[Z_AXIS] = parser.value_float();
+  }
+#endif
+
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
 
   /**
@@ -12083,6 +12096,9 @@ void process_parsed_command() {
       #endif
 
       #if ENABLED(DELTA)
+        case 579: // M579: Scale Cartesian axes
+          gcode_M579();
+          break;
         case 665: // M665: Set delta configurations
           gcode_M665();
           break;
@@ -13138,7 +13154,7 @@ void set_current_from_steppers_for_axis(const AxisEnum axis) {
     }
 
     // Fail if attempting move outside printable radius
-    if (!position_is_reachable_xy(ltarget[X_AXIS], ltarget[Y_AXIS]) && soft_endstops_enabled) return true;
+    if (!position_is_reachable(rtarget[X_AXIS], rtarget[Y_AXIS]) && soft_endstops_enabled) return true;
 
     // Remaining cartesian distances
     const float zdiff = rtarget[Z_AXIS] - current_position[Z_AXIS],
