@@ -5772,6 +5772,11 @@ void home_all_axes() { gcode_G28(true); }
             delta_tower_angle_trim[A_AXIS],
             delta_tower_angle_trim[B_AXIS],
             delta_tower_angle_trim[C_AXIS]
+          },
+          das[XYZ] = {
+            delta_axis_scale[X_AXIS],
+            delta_axis_scale[Y_AXIS],
+            delta_axis_scale[Z_AXIS]
           };
 
     SERIAL_PROTOCOLLNPGM("G33 Auto Calibrate");
@@ -5808,6 +5813,8 @@ void home_all_axes() { gcode_G28(true); }
       endstops.not_homing();
     }
 
+    delta_axis_scale[X_AXIS] = delta_axis_scale[Y_AXIS] = delta_axis_scale[Z_AXIS] = 1.0;
+
     if (auto_tune) {
       #if HAS_BED_PROBE
         G33_auto_tune();
@@ -5815,6 +5822,7 @@ void home_all_axes() { gcode_G28(true); }
         SERIAL_PROTOCOLLNPGM("A probe is needed for auto-tune");
       #endif
       G33_CLEANUP();
+      COPY(delta_axis_scale, das);
       return;
     }
 
@@ -5842,6 +5850,7 @@ void home_all_axes() { gcode_G28(true); }
       if (isnan(zero_std_dev)) {
         SERIAL_PROTOCOLPGM("Correct delta_radius with M665 R or end-stops with M666 X Y Z");
         SERIAL_EOL();
+        COPY(delta_axis_scale, das);
         return G33_CLEANUP();
       }
 
@@ -6020,12 +6029,16 @@ void home_all_axes() { gcode_G28(true); }
       }
 
       endstops.enable(true);
-      if (!home_delta())
+      if (!home_delta()) {
+        COPY(delta_axis_scale, das);
         return;
+      }
       endstops.not_homing();
 
     }
     while (((zero_std_dev < test_precision && iterations < 31) || iterations <= force_iterations) && zero_std_dev > calibration_precision);
+
+    COPY(delta_axis_scale, das);
 
     G33_CLEANUP();
   }
