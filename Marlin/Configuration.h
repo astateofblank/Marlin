@@ -1262,7 +1262,7 @@
 
 #if ENABLED(NOZZLE_PARK_FEATURE)
   // Specify a park position as { X, Y, Z }
-  #define NOZZLE_PARK_POINT { -110, 0, 25 }
+  #define NOZZLE_PARK_POINT { 120, -20, 25 }
   #define NOZZLE_PARK_XY_FEEDRATE 40   // X and Y axes feedrate in mm/s (also used for delta printers Z axis)
   #define NOZZLE_PARK_Z_FEEDRATE 40    // Z axis feedrate in mm/s (not used for delta printers)
 #endif
